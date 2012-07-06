@@ -1,0 +1,10 @@
+{% for post in site.posts offset: 0 limit: 1 %}
+<div class="post {% if forloop.first %}post-first{% endif %} {% if forloop.last %}post-last{% endif %}">
+    <div class="section section-post-meta">
+        <h2><a href="{{ post.url }}">{{ post.title }} {{ post_index }}</a></h2>
+        <p class="post-date">{{ post.date | date: "%B %e, %Y" }}</p>
+        </p>
+    </div>
+    {{ post.content }}
+</div>
+{% endfor %}

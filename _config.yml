@@ -1,0 +1,13 @@
+# Jekyll
+exclude: nbproject, README.md, manifest.yml, rakefile.rb
+permalink: /articles/:title/
+paginate: 1
+
+# Site
+webignition:
+  title: This is Jon Cram!
+  contact:
+    email: jon@webignition.net
+    phone: +44 791 431 6684
+
+code_github_user: webignition

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{{ page.title }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <link href="/vendor/twitter-bootstrap/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/vendor/twitter-bootstrap/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/vendor/font-awesome/latest/css/font-awesome.css" rel="stylesheet">
+        <link href="/assets/css/main.css" rel="stylesheet">
+
+        {% include assets/js/default.html %}
+    </head>
+    <body class="article" id="{% include page/id %}">
+        {% include header/navigation.html %}
+
+        <div class="container">
+            <div class="hero-unit introduction">
+                <div class="text">
+                    <h1>{{ page.title }}</h1>
+                    <p class="post-date">{{ page.date | date: "%B %e, %Y" }}</p>
+                </div>                
+            </div> 
+
+            <div class="row">
+                <div class="span8 content">
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_floating_style addthis_32x32_style">
+<a class="addthis_button_preferred_1"></a>
+<a class="addthis_button_preferred_2"></a>
+<a class="addthis_button_preferred_3"></a>
+<a class="addthis_button_preferred_4"></a>
+<a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4fed9f046eecb405"></script>
+<!-- AddThis Button END -->                    
+                    
+                    {{ content }}  
+                    
+        <div id="disqus_thread" class="section"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'webignition'; // required: replace example with your forum shortname
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>                   
+                </div>
+                <aside class="span4">
+                    <section id="joncram">
+                        <h3>{{ site.webignition.title }}</h3>
+                        {% include joncram.html %}
+                    </section>
+                    <section id="recent-articles">
+                        <h3>Recent articles</h3>
+                        {% include posts/recent-summary.html %}
+                        
+                        <a href="/articles/archive/" class="btn">View article archive &raquo;</a>
+                    </section>
+                    <div id="adverts">
+                        <h3>Things I work on</h3>
+
+                        <section>
+                            <span>advertisement</span>
+                            {% include adverts/simply-testable.html %}
+                        </section>            
+
+                        <section>
+                            <span>advertisement</span>
+                            {% include adverts/hosting-reborn.html %}
+                        </section>
+                    </div>        
+                </aside>    
+            </div>          
+        </div>
+    </body>
+</html>
