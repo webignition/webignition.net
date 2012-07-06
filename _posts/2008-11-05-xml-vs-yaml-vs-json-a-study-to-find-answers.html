@@ -1,0 +1,176 @@
+---
+layout: post
+title: "XML vs YAML vs JSON: A Study To Find Answers"
+---
+<div class="section">
+    <p>
+        XML is commonly used for web application messaging - sending information back to a browser from a web server, or sending information between web services. It's dead easy to do this and it works very well, hence XML has become the <em>de-facto</em> choice for data exchange for web applications.
+    </p>
+
+    <p>
+        Alternatives such as YAML and JSON have found significant support in recent years. Both aim to be a more suitable alternative to XML in some cases.
+    </p>
+
+    <p>
+        How much interest is there in knowing which is best? Let's see.
+    </p>
+
+    <ul>
+        <li>Google: xml vs yaml - 66 million</li>
+        <li>Google: xml vs json - 323 thousand</li>
+        <li>Google: yaml vs json - 1 million</li>
+    </ul>
+
+    <p>
+        Ok, so that's not an exact search. But is does suggest a huge amount of interest in a comparison between XML, YAML and JSON. (And no, Google, I didn't mean "xml vs <i>xml</i>" nor "yaml vs <i>jason</i>", but thanks anyway).
+    </p>
+</div>
+
+<div class="section">
+    <h2>What's the problem?</h2>
+    <p>
+        XML <em>might not</em> be the best choice in all cases, but that's no revelation.
+    </p>
+
+    <p>
+        Dare Obasanjo <a href="http://www.25hoursaday.com/weblog/PermaLink.aspx?guid=39842a17-781a-45c8-ade5-58286909226b">referred to JSON</a> as being <q>"another nail in the coffin of XML on the Web"</q>.
+    </p>
+
+    <p>
+        Tim Bray <a href="http://www.tbray.org/ongoing/When/200x/2006/12/21/JSON">solved the problem</a> for us 2 years ago.
+    </p>
+
+    <p>
+        David Megginson decided it <a href="http://www.megginson.com/blogs/quoderat/2007/01/03/all-markup-ends-up-looking-like-xml/">all ends up looking like XML</a> when you add a little complexity, but did note that:
+    </p>
+
+    <blockquote cite="http://www.megginson.com/blogs/quoderat/2007/01/03/all-markup-ends-up-looking-like-xml/">
+        JSON [has] the important advantage [of making] the most trivial cases easy to represent.
+    </blockquote>
+
+    <p>
+        James Bennett reminds us that JSON works:
+    </p>
+
+    <blockquote>
+        because most people don't really need all that overhead, and because it's often possible to do really interesting things with really simple formats
+    </blockquote>
+
+    <p>
+        Even 6 years ago David Mertz pointed out <q>"some situations where <a href="http://www.ibm.com/developerworks/xml/library/x-matters23.html">YAML provides a better object serialization format</a> than XML"</q>.
+    </p>
+
+    <p>
+        And, of course, Dustin Diaz informed the masses that JSON was not only fast but <a href="http://www.dustindiaz.com/json-for-the-masses/">so easy it'll make you sick</a>.
+    </p>
+
+    <p>
+        There's no end to the argument, but also not much <a href="http://www.spiration.co.uk/post/1390/Comparing%20YAML%20vs%20XML%20-%20a%20performance%20perspective">factual evidence</a> either.
+    </p>
+
+    <p>
+        Ultimately, I think Jeff Atwood best <a href="http://www.codinghorror.com/blog/archives/001114.html">sums up the gist</a> of the issue.
+
+    </p><blockquote cite="http://www.codinghorror.com/blog/archives/001114.html">
+        I don't necessarily think XML sucks, but the mindless, blanket application of XML as a dessert topping and a floor wax certainly does. Like all tools, it's a question of how you use it.
+    </blockquote>
+    <p></p>
+
+    <p>
+        So we know XML is not ideal, and JSON or YAML may be better in some cases. JSON might be faster, YAML might be better (and more beautiful).
+    </p>
+
+    <p>
+        But in what cases would you go for one instead of the other? What benefits might you see and where? I want cold hard facts, numbers, charts and answers.
+    </p>
+</div>
+<div class="section">
+    <h2>Who knows?</h2>
+
+    <p>
+        How much academic research has been made in the field? Let's see what journal articles have been published that compare either XML, YAML or JSON in any way.
+    </p>
+
+    <ul>
+        <li><a href="http://www.acm.org/">ACM Digital Library</a>: zero, from about 250 thousand articles</li>
+        <li><a href="http://ieeexplore.ieee.org">IEEE</a>: zero, from about 2 million articles</li>
+    </ul>
+
+    <p>
+        Ok, I'm getting desperate. The ACM and the IEEE are not small. They should have at least something of relevance.
+    </p>
+
+    <p>
+        <i>Searching ... searching ... searching ...</i>
+    </p>
+
+    <p>
+        Nope, turns out the ACM and IEEE journal archives contain nothing of direct relevance. There's even one article that relates to <em>a completely different YAML</em>.
+    </p>
+
+    <p>
+        <a href="http://scholar.google.com/">Google Scholar</a>, can you help?
+    </p>
+
+    <p>
+        Well, there is one academic article that explicitly <a href="http://alfarrabio.di.uminho.pt/~albie/publications/xmlyamljson07.pdf">compares XML, YAML and JSON</a> (PDF, 200Kb).
+    </p>
+
+    <p>
+        It seems that both <strong>YAML and JSON are faster to encode</strong> for up to about 5000 elements, then XML takes over. It also looks like both <strong>YAML and JSON require twice as much memory</strong> as XML when decoding. I couldn't determine whether the article relates this to real world performance (the article speaks Portuguese, I don't).
+    </p>
+
+    <p>
+        The point: <strong>not much academic research</strong> appears to have been undertaken and there's a <strong>huge amount of interest</strong> in some form of performance comparison.
+    </p>
+
+    <p>
+        There is no clear sign of any scientifically-arranged, repeatable, verifiable hard-evidence-based comparison. So I'll do just that.
+    </p>
+
+    <p>
+        Goodbye life for the next 2-3 months, and hello data object serialization formats for the new world.
+    </p>
+</div>
+<div class="section">
+    <h2>What will be studied?</h2>
+
+    <p>
+        I'll run some tests to determine which of the three technologies offers the least:
+    </p>
+    <ul>
+        <li>encode time</li>
+        <li>decode time</li>
+        <li>transmission time</li>
+        <li>overhead</li>
+    </ul>
+
+    <p>
+        The tests will be strictly scientific - I'll be doing my best to remove or minimise any influencing factors. Everything is going to be precise, exact and - most importantly - repeatable.
+    </p>
+
+    <p>
+        The results themselves might excite or scare a small number of developers. For the benefit of the rest of the world, I'll also be looking into <em>why this is actually useful</em>.
+    </p>
+
+    <ul>
+        <li>Will people notice that JSON is 607 ms faster?</li>
+        <li>Will your web server explode less frequently if you use YAML to talk to web services?</li>
+    </ul>
+
+    <p>
+        Just to top it all off, I'll also look at whether we need to be sending string-based serialised data between web services and whether we might be better off opting for much much faster choices such as <a href="http://code.google.com/apis/protocolbuffers/">Google Protocol Buffers</a>. And anything else along the way that may be relevant, time permitting.
+    </p>
+</div>
+<div class="section">
+    <h2>I need your help!</h2>
+    <p>
+        I've set up some <a href="http://webignition.net/research/response-times/which-is-faster/">test into the perception of time delays</a>. I'd like to initiate some form of distributed stress testing on some web services. There will surely be plenty of tests and tasks that would benefit from a few minutes of everyone's time.
+    </p>
+</div>
+<div class="section">
+    <h2>When will the results be ready?</h2>
+    <p>
+        This is part of my final year project, due at the end of April 2009. I'll have some results before then (I hope!) and will write up short pieces where possible. I'll try to make full and final results available after I finish my final exams, so that'll be some time around the end of June 2009.
+    </p>
+</div>
