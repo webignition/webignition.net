@@ -1,0 +1,37 @@
+---
+layout: archive
+title: Jon Cram
+---
+
+<div class="hero-unit introduction">
+    <div class="text">
+        <h1><a href="/articles">Recent articles</a> | archive list</h1>
+    </div>    
+</div>            
+
+<div class="row">
+    <div class="span8 content">{% include posts/archive.html %}</div>
+    <aside class="span4">
+        <section id="joncram">
+            <h3>{{ site.webignition.title }}</h3>
+            {% include joncram.html %}
+        </section>
+        <section id="recent-articles">
+            <h3>Recent articles</h3>
+            {% include posts/recent-summary.html %}
+        </section>
+        <div id="adverts">
+            <h3>Things I work on</h3>
+
+            <section>
+                <span>advertisement</span>
+                {% include adverts/simply-testable.html %}
+            </section>            
+            
+            <section>
+                <span>advertisement</span>
+                {% include adverts/hosting-reborn.html %}
+            </section>
+        </div>        
+    </aside>    
+</div>
