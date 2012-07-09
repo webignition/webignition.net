@@ -1,7 +1,6 @@
 # Jekyll
 exclude: nbproject, README.md, manifest.yml, rakefile.rb
 permalink: /articles/:title/
-paginate: 1
 
 # Site
 webignition:
