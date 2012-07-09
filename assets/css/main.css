@@ -155,3 +155,11 @@ body {
 #disqus_thread {
     margin-top:60px;
 }
+
+.article .section ol {
+    margin-left:40px;
+}
+
+.article .section ol li {
+    margin: 0 0 8px 0px;
+}
