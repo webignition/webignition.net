@@ -1,0 +1,160 @@
+---
+layout: post
+title: "Symfony Container-Aware Migrations"
+---
+
+<div class="section">
+    <p>
+        The <a href="http://app.simplytestable.com">Simply Testable core application</a> uses
+        <a href="http://docs.doctrine-project.org/projects/doctrine-migrations/en/latest/reference/introduction.html">Doctine migrations</a>
+        to handle database schema changes. Combined with the <a href="https://github.com/doctrine/DoctrineMigrationsBundle">DoctrineMigrationsBundle</a> this provides
+        an excellent means for automatically generating migrations based on entity changes.
+    </p>
+    <p>
+        This is the right way to handle schema migrations for a Symfony application. I've been looking for a comparable way
+        of handling data migrations.
+    </p>
+    <p>
+        I'm talking about application-dependent data required at install time upon which the application is fundamentally dependent
+        if it is to operate as intended.
+    </p> 
+    <p>
+        Each web site test job is associated with a user. The default public user enables free tests to be run. The service
+        can't reasonably work without this. Failing to manually add the default public user during install time is one point
+        of failure we can avoid by ensuring the relevant data is applied via a migration.
+    </p>
+    <p>
+        Vanilla Doctrine migrations aren't great for importing data <em>in the context of a Symfony application</em>. For other applications
+        that use Doctine as the ORM, Doctrine migrations may be just fine.
+    </p>
+    <p>
+        Within a vanilla migration, you can create and persist entities or you can resort to plain old SQL. This is fine if your entity is
+        fully-functional (or at least sufficiently-functional) outside of a Symfony application context. This might also be fine if you're
+        confident in forming the correct SQL statements, however as we're working at the application level, that SQL even exists is not
+        something we should need to consider.
+    </p>
+    <p>
+        I'd like to be able to work within migrations at the same level of abstraction as I'm working within when dealing with controllers,
+        entities and other application-level abstractions.
+    </p>
+    <p>
+        Here's how I'd create the default public user at the application level:
+    </p>
+<pre>$user = new User();
+$user->setEmail('public@simplytestable.com');
+$user->setPlainPassword('public');
+$user->setUsername('public');
+
+$userManager = $this->container->get('fos_user.user_manager');        
+$userManager->updateUser($user);</pre>
+    <p>
+        This depends on the Symfony container to get the FOSUserBundle's UserManager. In the context of a vanilla migration this
+        can't happen.
+    </p>
+    <p>
+        What we need is a migration that has access to a Symfony container. This part of the puzzle is straightforward: Symfony
+        provides the <code>ContainerAwareInterface</code> interface.
+    </p>    
+    <p>
+        A class that implements this interface gives us a migration
+        that can be aware of a Symfony container:
+    </p>
+<pre>
+&lt;?php
+namespace webignition\ContainerAwareMigration;
+
+use Doctrine\DBAL\Migrations\AbstractMigration,
+    Doctrine\DBAL\Schema\Schema,
+    Symfony\Component\DependencyInjection\ContainerAwareInterface,
+    Symfony\Component\DependencyInjection\ContainerInterface;
+
+abstract class ContainerAwareMigration extends AbstractMigration implements ContainerAwareInterface
+{
+    /**
+     *
+     * @var Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected $container;
+    
+
+    /**
+     *
+     * @param ContainerInterface $container 
+     */
+    public function setContainer(ContainerInterface $container = null) {
+        $this->container = $container;
+    }
+}</pre>
+    <p>
+        The <a href="https://github.com/webignition/ContainerAwareMigration">webignition/ContainerAwareMigration</a>
+        provides this class. Clone as you see fit. If you're using composer, simply add a dependency:
+    </p>
+<pre>"require": {
+    "webignition/container-aware-migration": "*"
+},</pre>    
+    <p>
+        The second part of the puzzle is a little more complex. Your migration needs a Symfony container injected into
+        it. No matter how container-aware your migration is, a container won't magically appear within it.
+    </p>
+    <p>
+        The <a href="https://github.com/doctrine/DoctrineMigrationsBundle">DoctrineMigrationsBundle</a>, when running
+        migrations, iterates over and executes all migrations that you have created. It's at this point we can
+        sensibly inject a Symfony container into a migration that is container-aware. A fork at
+        <a href="https://github.com/webignition/DoctrineMigrationsBundle">webignition/DoctrineMigrationsBundle</a>
+        does so as it's aware, at the point of configuring migrations, of both the Symfony container and the migration.
+    </p>
+    <p>
+        There are just two simple steps to get the same working in your Symfony application.
+    </p>
+    <p>
+        Firstly, update your composer dependencies:
+    </p>
+<pre>"require": {       
+    "webignition/doctrine-migrations-bundle": "*",
+    "webignition/container-aware-migration": "*"
+},</pre>
+    <p>
+        Note: if you already have a dependency for <code>doctrine/doctrine-migrations-bundle</code> you'll need
+        to remove this from your composer.json and delete vendor/doctrine/doctrine-migrations-bundle.
+    </p>
+    <p>
+        Secondly, update relevant migration classes to extend <code>webignition/ContainerAwareMigration</code>.
+        You can then make use of the Symfony container within your <code>postUp()</code> and <code>postDown()</code>
+        methods.
+    </p>
+    <p>
+        Here's a real-life example where we're using a migration to create the fos_user table and then
+        create the default public user:
+    </p>
+<pre>&lt;?php
+namespace Application\Migrations;
+
+use webignition\ContainerAwareMigration\ContainerAwareMigration,
+    Doctrine\DBAL\Schema\Schema,
+    SimplyTestable\ApiBundle\Entity\User;
+
+class Version20120712145445_create_fos_user extends ContainerAwareMigration
+{
+    public function up(Schema $schema)
+    {
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->addSql("CREATE TABLE fos_user ... ");
+    }
+
+    public function down(Schema $schema)
+    {
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+        $this->addSql("DROP TABLE fos_user");
+    }
+    
+    public function postUp(Schema $schema) {
+        $user = new User();
+        $user->setEmail('public@simplytestable.com');
+        $user->setPlainPassword('public');
+        $user->setUsername('public');
+        
+        $userManager = $this->container->get('fos_user.user_manager');        
+        $userManager->updateUser($user);        
+    }
+}</pre>    
+</div>
