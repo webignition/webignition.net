@@ -3,67 +3,74 @@ layout: home
 title: Jon Cram
 ---
 
-<div class="hero-unit introduction">
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <div class="hero-unit introduction">
 
-    <aside>
-        {% include joncram.html %}
-    </aside>
+                <aside>
+                    {% include joncram.html %}
+                </aside>
 
-    <div class="text">
-        <h1>{{ site.webignition.title }}</h1>
+                <div class="text">
+                    <h1>{{ site.webignition.title }}</h1>
+                </div>
+
+
+                <p>
+                    I make software for the web. I own and develop the UK's leading  <a href="http://hostingreborn.com">pay-as-you-go web hosting provider</a>
+                    and am currently building a <a href="http://simplytestable.com/">professional web frontend testing service</a>.
+                </p>
+
+                <p>
+                    I worked previously for <a href="http://boxuk.com">Box UK</a> and <a href="http://limegreentangerine.co.uk">limegreentangerine</a> before
+                    founding <a href="http://simplytestable.com/">Simply Testable</a>.
+                </p>
+
+            </div> 
+        </div>
     </div>
+</div>
 
 
-    <p>
-        I make software for the web. I own and develop the UK's leading  <a href="http://hostingreborn.com">pay-as-you-go web hosting provider</a>
-        and am currently building a <a href="http://simplytestable.com/">professional web frontend testing service</a>.
-    </p>
-    
-    <p>
-        I worked previously for <a href="http://boxuk.com">Box UK</a> and <a href="http://limegreentangerine.co.uk">limegreentangerine</a> before
-        founding <a href="http://simplytestable.com/">Simply Testable</a>.
-    </p>
+<div class="container">
+    <div class="row">
+        <div class="span8">
+            <h2>Products of mine</h2>
 
-</div>            
-
-<div class="row">
-    <div class="span8 products">
-        <h2>Products of mine</h2>
-
-        <div class="row products">
-            <div class="span4">
-                <h3>
-                    <a href="http://hostingreborn.com/">Hosting Reborn Pay As You Go Hosting</a>
-                </h3>    
-                <p>
-                    Pay as you go web hosting with free registration, no monthly/annual contracts and no limits.
-                </p>
-                <a href="http://hostingreborn.com/"><img src="http://hostingreborn.com/images/tour/hostingaccount-small.png" width="370" height="249" /></a>
-            </div>
-            <div class="span4">
-                <h3>
-                    <a href="http://simplytestable.com/">Simply Testable Automated Web Testing</a>                    
-                </h3> 
-                <p>
-                    Automated professional front-end web testing. Takes the pain out of trivial front-end testing.
-                </p>
-                <a href="http://simplytestable.com/"><img src="http://i.imgur.com/nCVtZ.png" width="370" height="249" /></a>
+            <div class="row products">
+                <div class="span4">
+                    <h3>
+                        <a href="http://hostingreborn.com/">Hosting Reborn Pay As You Go Hosting</a>
+                    </h3>    
+                    <p>
+                        Pay as you go web hosting with free registration, no monthly/annual contracts and no limits.
+                    </p>
+                    <a href="http://hostingreborn.com/"><img src="http://hostingreborn.com/images/tour/hostingaccount-small.png" width="370" height="249" /></a>
+                </div>
+                <div class="span4">
+                    <h3>
+                        <a href="http://simplytestable.com/">Simply Testable Automated Web Testing</a>                    
+                    </h3> 
+                    <p>
+                        Automated professional front-end web testing. Takes the pain out of trivial front-end testing.
+                    </p>
+                    <a href="http://simplytestable.com/"><img src="http://i.imgur.com/nCVtZ.png" width="370" height="249" /></a>
+                </div>
             </div>
         </div>
+        <div class="span4">
+            <h2>Recent ramblings</h2>
 
-    </div>
-    <div class="span4">
-        <h2>Recent ramblings</h2>
+            {% for post in site.posts offset: 0 limit: 3 %}
+            <div class="post clickable-area">
+                <h3><a href="{{ post.url }}/">{{ post.title }}</a></h3>
+                <p class="post-date">{{ post.date | date_to_string }}</p>
+                <p>{{ post.content | strip_html | truncatewords: 35 }} <a href="{{ post.url }}/">Read more</a></p>
+            </div>
+            {% endfor %} 
 
-        {% for post in site.posts offset: 0 limit: 3 %}
-        <div class="post clickable-area">
-            <h3><a href="{{ post.url }}/">{{ post.title }}</a></h3>
-            <p class="post-date">{{ post.date | date_to_string }}</p>
-            <p>{{ post.content | strip_html | truncatewords: 35 }} <a href="{{ post.url }}/">Read more</a></p>
+            <a href="/articles/" class="btn">View full blog &raquo;</a>
         </div>
-        {% endfor %} 
-
-        <a href="/articles/" class="btn">View full blog &raquo;</a>
-
     </div>
 </div>
